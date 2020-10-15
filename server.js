@@ -62,6 +62,55 @@ client.connect(err => {
       res.send(documents)
     })
   })
+
+  app.post('/add-admin',(req,res)=>{
+    adminsCollection.insertOne({admin:req.body.admin})
+    .then(result=>{
+      res.send(result.insertedCount>0)
+    })
+    .catch(err=>console.log(err))
+  })
+
+  app.post('/add-review',(req,res)=>{
+    reviewsCollection.insertOne(req.body)
+    .then(result=>{
+      res.send(result.insertedCount>0)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
+  })
+
+  app.get('/show-feedbacks',(req,res)=>{
+    reviewsCollection.find({})
+    .toArray((error, documents)=>{
+      res.send(documents)
+    })
+  })
+
+  app.post('/add-order',(req,res)=>{
+    ordersCollection.insertOne(req.body)
+    .then(result=>{
+      res.send(result.insertedCount>0)
+    })
+    .catch(error=>console.log(error))
+  })
+
+  app.get('/show-orders',(req,res)=>{
+    ordersCollection.find({})
+    .toArray((error, documents)=>{
+      res.send(documents)
+    })
+  })
+
+  app.get('/show-order-by-mail',(req,res)=>{
+    ordersCollection.find({email:req.headers.email})
+    .toArray((error, documents)=>{
+      res.send(documents)
+      console.log(documents)
+      console.log(req.headers.email)
+    })
+  })
   //mongo end
 });
 
