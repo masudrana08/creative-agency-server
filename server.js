@@ -11,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 require('dotenv').config()
 const admin = require('firebase-admin');
 
-const serviceAccount2={
+const serviceAccount={
     "type": "service_account",
     "project_id": "creative-agency-fullstack",
     "private_key_id": process.env.PRIVATE_KEY_ID,
@@ -26,7 +26,7 @@ const serviceAccount2={
 }
 const { ObjectID } = require('mongodb')
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount2),
+  credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://creative-agency-fullstack.firebaseio.com"
 });
 
