@@ -12,6 +12,7 @@ require('dotenv').config()
 
 const admin = require('firebase-admin');
 const serviceAccount = require("./creative-agency-fullstack-firebase-adminsdk-n580z-2ad013d967.json");
+const { ObjectID } = require('mongodb')
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://creative-agency-fullstack.firebaseio.com"
@@ -115,6 +116,19 @@ client.connect(err => {
     .toArray((error, documents)=>{
       res.send(documents.length>0)
     })
+  })
+
+  app.patch('/update-status',(req,res)=>{
+    ordersCollection.updateOne(
+      {_id:ObjectID(req.body.id)},
+      {
+        $set:{'status':req.body.status}
+      }
+    )
+    .then(result=>{
+      console.log(result)
+    })
+    .catch(err=>console.log(err))
   })
   //mongo end
 });
