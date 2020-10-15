@@ -11,22 +11,13 @@ app.use(bodyParser.urlencoded({ extended: false }))
 require('dotenv').config()
 const admin = require('firebase-admin');
 
-const serviceAccount={
-    "type": "service_account",
-    "project_id": "creative-agency-fullstack",
-    "private_key_id": `${process.env.PRIVATE_KEY_ID}`,
-    "private_key": `${process.env.PRIVATE_KEY}`,
-    "client_email": `${process.env.CLIENT_EMAIL}`,
-    "client_id": `${process.env.CLIENT_ID}`,
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-n580z%40creative-agency-fullstack.iam.gserviceaccount.com"
-  
-}
+
 const { ObjectID } = require('mongodb')
+
+const serviceAccount = require("./private.json");
+
 admin.initializeApp({
-  credential: admin.credential.cert({...serviceAccount}),
+  credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://creative-agency-fullstack.firebaseio.com"
 });
 
