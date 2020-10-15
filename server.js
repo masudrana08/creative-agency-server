@@ -107,8 +107,13 @@ client.connect(err => {
     ordersCollection.find({email:req.headers.email})
     .toArray((error, documents)=>{
       res.send(documents)
-      console.log(documents)
-      console.log(req.headers.email)
+    })
+  })
+
+  app.get('/check-admin',(req,res)=>{
+    adminsCollection.find({admin:req.headers.email})
+    .toArray((error, documents)=>{
+      res.send(documents.length>0)
     })
   })
   //mongo end
