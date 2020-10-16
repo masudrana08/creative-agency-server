@@ -15,7 +15,6 @@ const admin = require('firebase-admin');
 const { ObjectID } = require('mongodb')
 
 const serviceAccount = require(`${__dirname}/private.json`);
-console.log(serviceAccount)
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   databaseURL: "https://creative-agency-fullstack.firebaseio.com"
@@ -57,6 +56,7 @@ client.connect(err => {
       img:image, description, serviceTitle
     })
     .then(result=>{
+      res.send(result.insertedCount>0)
       console.log(result)
     })
   })
@@ -130,9 +130,19 @@ client.connect(err => {
       }
     )
     .then(result=>{
-      console.log(result)
+      res.send(result.modifiedCount>0)
     })
     .catch(err=>console.log(err))
+  })
+
+  app.delete('/delete-feedback',(req,res)=>{
+    reviewsCollection.deleteOne({_id:ObjectID(req.headers.id)})
+    .then(result=>{
+      res.send(result.deletedCount>0)
+    })
+    .catch(err=>{
+      console.log(err)
+    })
   })
   //mongo end
 });
